@@ -9,12 +9,14 @@ public class ChessBot {
    ChessLogic logic;
    private int eval;
    private int inspectedSpotValue;
+   private boolean botIsActive;
    private int boardLook1[][];
 
    // ----- ChessBot Constructors
    public ChessBot() {
       this.eval = 0;
       this.inspectedSpotValue = 0;
+      this.botIsActive = false;
       this.boardLook1 = new int[8][8];
    }
 

@@ -630,6 +630,11 @@ public class ChessLogic {
       heldPiece = getSpot(y, x); // used to store the value in the spot being overwritten
       setSpot(b, a, 0);
       setSpot(y, x, screen.getSelected());
+      try {
+      Thread.sleep(250);
+      } catch (InterruptedException e){
+
+      }
       if (checkCheck() == true) { // if you end up in check after everything goes down
          setSpot(y, x, heldPiece); // <<< this replaces the spot with the held piece
          setSpot(b, a, screen.getSelected());
