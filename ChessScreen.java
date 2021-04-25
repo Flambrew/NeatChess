@@ -303,18 +303,22 @@ public class ChessScreen extends JComponent implements MouseListener {
          } else if (e.getX() >= 45 && e.getY() >= 25 && e.getX() <= 145 && e.getY() <= 75) { // exit to menu
             screenNumber = 1;
             repaint();
+            logic.setup();
          } else if (e.getX() >= 170 && e.getY() >= 25 && e.getX() <= 270 && e.getY() <= 75) { // resign white
             screenNumber = 3;
             logic.setWinner(2);
             repaint();
+            logic.setup();
          } else if (e.getX() >= 1024 && e.getY() >= 25 && e.getX() <= 1124 && e.getY() <= 75) { // resign black
             screenNumber = 3;
             logic.setWinner(1);
             repaint();
+            logic.setup();
          } else if (e.getX() >= 1149 && e.getY() >= 25 && e.getX() <= 1249 && e.getY() <= 75) { // declare draw
             screenNumber = 3;
             logic.setWinner(3);
             repaint();
+            logic.setup();
          }
       } else if (screenNumber == 3) {
          if (e.getX() >= 481 && e.getY() >= 364 && e.getX() <= 813 && e.getY() <= 415) { // if you hit the start button

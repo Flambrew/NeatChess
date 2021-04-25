@@ -40,6 +40,7 @@ public class ChessLogic {
    private int kingY; //////// <| these are used in the checkCheck method
    private boolean inCheck; // </
    private int winner; // this is who won
+   private int historyLineCounter; // how many lines long is history
 
    private String message; // <\ used with the
    private int message2; //// </ joptionpane
@@ -78,6 +79,7 @@ public class ChessLogic {
       this.kingX = 10;
       this.kingY = 10;
       this.winner = 0;
+      this.historyLineCounter = 0;
 
       this.message = "";
       this.message2 = 0;
@@ -119,6 +121,11 @@ public class ChessLogic {
    // ----- ChessLogic General Methods
    // ----- ----- This sets up the board with the starting piece layout.
    public void setup() {
+      for (int i = 0; i < 8; i++) {
+         for (int r = 0; r < 8; r++) {
+            setSpot(i, r, 0);
+         }
+      }
       for (int i = 0; i < 8; i++) { // Pawns
          setSpot(1, i, -1);
          setSpot(6, i, 1);
@@ -165,10 +172,7 @@ public class ChessLogic {
          screen.setTileX(10); // make sure the tiles in screen are reset
          screen.setTileY(10);
          while (!chosen) { // loop until chosen is true
-            try {
-               Thread.sleep(10);
-            } catch (InterruptedException e) {
-            }
+            sleep(10);
             storedA = 10; // reset the stored tile #'s
             storedB = 10;
             storedA = screen.getTileX(); // set them to whatever has been selected in screen
@@ -182,10 +186,7 @@ public class ChessLogic {
          screen.setTileX(10); // make sure the tiles in screen are reset
          screen.setTileY(10);
          while (!chosen) { // loop until chosen is true
-            try {
-               Thread.sleep(10);
-            } catch (InterruptedException e) {
-            }
+            sleep(10);
             storedX = 10; // reset the stored tile #'s
             storedY = 10;
             storedX = screen.getTileX(); // set them to whatever has been selected in screen
@@ -630,11 +631,8 @@ public class ChessLogic {
       heldPiece = getSpot(y, x); // used to store the value in the spot being overwritten
       setSpot(b, a, 0);
       setSpot(y, x, screen.getSelected());
-      try {
-      Thread.sleep(250);
-      } catch (InterruptedException e){
-
-      }
+      printBoard(true);
+      sleep(125);
       if (checkCheck() == true) { // if you end up in check after everything goes down
          setSpot(y, x, heldPiece); // <<< this replaces the spot with the held piece
          setSpot(b, a, screen.getSelected());
@@ -667,6 +665,7 @@ public class ChessLogic {
       setSpot(b, a, 0);
       setSpot(y, x, screen.getSelected());
       setSpot(y + getTurn(), x, 0);
+      sleep(125);
       if (checkCheck() == true) { // if you end up in check after everything goes down
          setSpot(y, x, heldPiece); // <<< this replaces the spot with the held piece
          setSpot(b, a, screen.getSelected());
@@ -690,6 +689,7 @@ public class ChessLogic {
       for (int i = 0; i < 2; i++) {
          setSpot(b, a - i - 1, screen.getSelected());
          setSpot(b, a - i, 0);
+         sleep(125);
          if (checkCheck() == true) {
             setSpot(b, a - i - 1, 0);
             setSpot(b, a - i, screen.getSelected());
@@ -776,14 +776,16 @@ public class ChessLogic {
       if (screen.getSelected() > 0) {
          history += " ";
       }
-      if (history.length() > 56) {
+      if (history.length() - (historyLineCounter * 56) > 56) {
          history += "\n";
+         historyLineCounter++;
       }
       return history;
    }
 
    // ----- ----- Checks whether a king is in check
    public boolean checkCheck() { // This is the dumbest method name ever, and I love it.
+      inCheck = false;
       for (int i = 0; i < 8; i++) { // these for loops find the king's position
          for (int r = 0; r < 8; r++) {
             if (getTurn() * getSpot(i, r) == 6) {
@@ -793,6 +795,7 @@ public class ChessLogic {
             }
          }
       }
+      sleep(100);
       // first 4 ifs look for rook/queen attacks
       for (int i = 1; i < kingX; i++) { // left
          if (getTurn() * getSpot(kingY, kingX - i) == -4 || getTurn() * getSpot(kingY, kingX - i) == -5) {
@@ -883,5 +886,13 @@ public class ChessLogic {
    // ----- ----- Checks whether a king is mated
    public boolean matecheck() {
       return false;
+   }
+
+   // ----- ----- This is to make sleeps simpler
+   public void sleep(int s) {
+      try {
+         Thread.sleep(s);
+      } catch (InterruptedException e) {
+      }
    }
 }
