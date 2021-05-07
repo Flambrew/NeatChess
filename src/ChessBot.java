@@ -66,7 +66,7 @@ public class ChessBot {
    }
 
    // ----- ----- This evaluates the position
-   public int runEval() {
+   public int eval() {
       for (int i = 0; i < 8; i++) {
          for (int r = 0; r < 8; r++) {
             switch (logic.getSpot(i, r)) {
@@ -149,7 +149,7 @@ public class ChessBot {
       if (logic.getTurn() == 1) {
          if (getSpot(i - 1, r - 1) < 0) {
             basicMove(i, r, i-1, r-1);
-            if (logic.getTurn * selectedEval < eval()) {
+            if (logic.getTurn() * selectedEval < eval()) {
                selectedMove = "";
             }
          }
